@@ -35,7 +35,8 @@ def buscar_ip():
     # 2. Fallback via Socket caso rode fora do Docker
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     try:
-        s.connect(("98.89.118.4", 80))
+        # UDP connect nao envia nada: so descobre qual IP local sai em direcao ao banco
+        s.connect((os.getenv("DB_HOST"), 80))
         ip = s.getsockname()[0]
         return ip
     except OSError:
